@@ -21,8 +21,8 @@ final class CzechHolidays
         '12-26' => '2. svátek vánoční'
     ];
 
-    private static $easterFriday = 'Velký pátek';
-    private static $easterSunday = 'Velikonoční neděle';
+    private static $goodFriday = 'Velký pátek';
+    private static $easter = 'Velikonoční neděle';
     private static $easterMonday = 'Velikonoční pondělí';
 
     /**
@@ -72,13 +72,13 @@ final class CzechHolidays
         $easterDays = easter_days(intval($year));
         $march21th = DateTimeImmutable::createFromFormat('d-m-Y', '21-03-' . sprintf('%4d', $year));
 
-        $easterSunday = $march21th->add(new DateInterval(sprintf('P%dD', $easterDays)));
-        $easterFriday = $easterSunday->sub(new DateInterval('P2D'));
-        $easterMonday = $easterSunday->add(new DateInterval('P1D'));
+        $easter = $march21th->add(new DateInterval(sprintf('P%dD', $easterDays)));
+        $goodFriday = $easter->sub(new DateInterval('P2D'));
+        $easterMonday = $easter->add(new DateInterval('P1D'));
 
         return [
-            $easterFriday->format('m-d') => self::$easterFriday,
-            $easterSunday->format('m-d') => self::$easterSunday,
+            $goodFriday->format('m-d')   => self::$goodFriday,
+            $easter->format('m-d')       => self::$easter,
             $easterMonday->format('m-d') => self::$easterMonday
         ];
     }
