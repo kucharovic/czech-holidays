@@ -1,6 +1,6 @@
 # CzechHolidays
 
-Utility to check if given date is holiday in Czech Republic.
+Simple and lighweight utility to check if given date is holiday in Czech Republic. If you need more than Czech holidays, I recommend [Yasumi](https://github.com/azuyalabs/yasumi) library.
 
 ## Installation with [Composer](https://getcomposer.org/)
 
@@ -27,7 +27,7 @@ echo CzechHolidays::getHolidayName($day) // Nový rok
 
 # CzechHolidays
 
-Jednoduchý nástroj na práci s českými svátky (včetně Velikonoc).
+Jednoduchý PHP nástroj na práci s českými svátky (včetně Velikonoc). Pokud potřebujete pracovat se svátky několika zemí (včetně ČR), doporučuji knihovnu [Yasumi](https://github.com/azuyalabs/yasumi).
 
 ## Instalace pomocí nástroje [Composer](https://getcomposer.org/)
 
