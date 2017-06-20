@@ -68,11 +68,7 @@ final class CzechHolidays
      */
     private static function getEaster($year)
     {
-        // number of days after March 21
-        $easterDays = easter_days(intval($year));
-        $march21th = DateTimeImmutable::createFromFormat('d-m-Y', '21-03-' . sprintf('%4d', $year));
-
-        $easter = $march21th->add(new DateInterval(sprintf('P%dD', $easterDays)));
+        $easter = self::calculateEaster($year);
         $goodFriday = $easter->sub(new DateInterval('P2D'));
         $easterMonday = $easter->add(new DateInterval('P1D'));
 
@@ -81,5 +77,57 @@ final class CzechHolidays
             $easter->format('m-d')       => self::$easter,
             $easterMonday->format('m-d') => self::$easterMonday
         ];
+    }
+
+    /**
+     * @link https://github.com/azuyalabs/yasumi/blob/1.6.1/src/Yasumi/Provider/ChristianHolidays.php#L561-L637
+     *
+     * @param string|int $year
+     *
+     * @return DateTimeImmutable
+     */
+    private static function calculateEaster($year)
+    {
+        if (extension_loaded('calendar')) {
+            $easter_days = \easter_days(intval($year));
+        } else {
+            $golden = (int)(($year % 19) + 1); // The Golden Number
+            // The Julian calendar applies to the original method from 326AD. The Gregorian calendar was first
+            // introduced in October 1582 in Italy. Easter algorithms using the Gregorian calendar apply to years
+            // 1583 AD to 4099 (A day adjustment is required in or shortly after 4100 AD).
+            // After 1752, most western churches have adopted the current algorithm.
+            if ($year <= 1752) {
+                $dom = ($year + (int)($year / 4) + 5) % 7; // The 'Dominical number' - finding a Sunday
+                if ($dom < 0) {
+                    $dom += 7;
+                }
+                $pfm = (3 - (11 * $golden) - 7) % 30; // Uncorrected date of the Paschal full moon
+                if ($pfm < 0) {
+                    $pfm += 30;
+                }
+            } else {
+                $dom = ($year + (int)($year / 4) - (int)($year / 100) + (int)($year / 400)) % 7; // The 'Dominical number' - finding a Sunday
+                if ($dom < 0) {
+                    $dom += 7;
+                }
+                $solar = (int)(($year - 1600) / 100) - (int)(($year - 1600) / 400); // The solar correction
+                $lunar = (int)(((int)(($year - 1400) / 100) * 8) / 25); // The lunar correction
+                $pfm = (3 - (11 * $golden) + $solar - $lunar) % 30; // Uncorrected date of the Paschal full moon
+                if ($pfm < 0) {
+                    $pfm += 30;
+                }
+            }
+            // Corrected date of the Paschal full moon, - days after 21st March
+            if (($pfm === 29) || ($pfm === 28 && $golden > 11)) {
+                --$pfm;
+            }
+            $tmp = (4 - $pfm - $dom) % 7;
+            if ($tmp < 0) {
+                $tmp += 7;
+            }
+            $easter_days = (int)($pfm + $tmp + 1); // Easter as the number of days after 21st March
+        }
+        $march21th = DateTimeImmutable::createFromFormat('Y-m-d', sprintf('%4d-03-21', $year));
+        return $march21th->add(new DateInterval('P' . $easter_days . 'D'));
     }
 }
