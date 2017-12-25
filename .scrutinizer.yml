@@ -85,7 +85,8 @@ checks:
 
 filter:
     excluded_paths:
-        - vendor/*
+        - vendor/
+        - tests/
 
 tools:
     external_code_coverage: true
