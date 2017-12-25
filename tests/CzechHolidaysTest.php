@@ -8,8 +8,8 @@ use DateTime;
 final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 {
 	/**
-	 * @covers CzechHolidays::isHoliday
-	 * @covers CzechHolidays::getHolidayName
+	 * @covers JK\Utils\CzechHolidays::isHoliday
+	 * @covers JK\Utils\CzechHolidays::getHolidayName
 	 */
 	public function testWorkDay()
 	{
@@ -19,8 +19,8 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers CzechHolidays::isHoliday
-	 * @covers CzechHolidays::getHolidayName
+	 * @covers JK\Utils\CzechHolidays::isHoliday
+	 * @covers JK\Utils\CzechHolidays::getHolidayName
 	 */
 	public function testFixedHoliday()
 	{
@@ -30,8 +30,8 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers CzechHolidays::isHoliday
-	 * @covers CzechHolidays::getHolidayName
+	 * @covers JK\Utils\CzechHolidays::isHoliday
+	 * @covers JK\Utils\CzechHolidays::getHolidayName
 	 */
 	public function testEasterSunday()
 	{
@@ -41,7 +41,7 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @covers CzechHolidays::getHolidaysForYear
+	 * @covers JK\Utils\CzechHolidays::getHolidaysForYear
 	 */	
 	public function testHolidaysForYear()
 	{
