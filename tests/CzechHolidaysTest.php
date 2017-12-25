@@ -7,6 +7,10 @@ use DateTime;
 
 final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 {
+	/**
+	 * @covers CzechHolidays::isHoliday
+	 * @covers CzechHolidays::getHolidayName
+	 */
 	public function testWorkDay()
 	{
 		$workDate = DateTime::createFromFormat('Y-m-d', '2018-01-31');
@@ -14,6 +18,10 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 		$this->assertFalse(CzechHolidays::getHolidayName($workDate));
 	}
 
+	/**
+	 * @covers CzechHolidays::isHoliday
+	 * @covers CzechHolidays::getHolidayName
+	 */
 	public function testFixedHoliday()
 	{
 		$holiday = DateTime::createFromFormat('Y-m-d', '2018-01-01');
@@ -21,6 +29,10 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 		$this->assertSame('Nový rok', CzechHolidays::getHolidayName($holiday));
 	}
 
+	/**
+	 * @covers CzechHolidays::isHoliday
+	 * @covers CzechHolidays::getHolidayName
+	 */
 	public function testEasterSunday()
 	{
 		$holiday = DateTime::createFromFormat('Y-m-d', '2017-04-16');
@@ -28,6 +40,9 @@ final class CzechHolidaysTest extends PHPUnit_Framework_TestCase
 		$this->assertSame('Velikonoční neděle', CzechHolidays::getHolidayName($holiday));
 	}
 
+	/**
+	 * @covers CzechHolidays::getHolidaysForYear
+	 */	
 	public function testHolidaysForYear()
 	{
 		$holidays2018 = [
