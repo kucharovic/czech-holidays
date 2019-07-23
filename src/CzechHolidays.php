@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace JK\Utils;
 
@@ -18,7 +18,7 @@ final class CzechHolidays
 		'11-17' => 'Den boje za svobodu a demokracii',
 		'12-24' => 'Štědrý den',
 		'12-25' => '1. svátek vánoční',
-		'12-26' => '2. svátek vánoční'
+		'12-26' => '2. svátek vánoční',
 	];
 
 	private static $goodFriday = 'Velký pátek';
@@ -27,48 +27,48 @@ final class CzechHolidays
 
 	/**
 	 * @param  DateTimeInterface $day
-	 * @return boolean
+	 * @return bool
 	 */
-	public static function isHoliday(DateTimeInterface $day)
+	public static function isHoliday(DateTimeInterface $day): bool
 	{
-		return array_key_exists(
+		return \array_key_exists(
 			$day->format('m-d'),
-			self::getHolidaysForYear($day->format('Y'))
+			self::getHolidaysForYear((int) $day->format('Y'))
 		);
 	}
 
 	/**
-	 * @param string|integer $year
+	 * @param integer $year
 	 * @return array<string,string>
 	 */
-	public static function getHolidaysForYear($year)
+	public static function getHolidaysForYear(int $year): array
 	{
 		$holidays = self::$fixed + self::getEaster($year);
-		ksort($holidays);
+		\ksort($holidays);
 
 		return $holidays;
 	}
 
 	/**
 	 * @param  DateTimeInterface $day
-	 * @return string|false
+	 * @return string|null
 	 */
-	public static function getHolidayName(DateTimeInterface $day)
+	public static function getHolidayName(DateTimeInterface $day): ?string
 	{
-	   $holidays = self::getHolidaysForYear($day->format('Y'));
+	   $holidays = self::getHolidaysForYear((int) $day->format('Y'));
 
-	   if (array_key_exists($day->format('m-d'), $holidays)) {
+	   if (\array_key_exists($day->format('m-d'), $holidays)) {
 		   return $holidays[$day->format('m-d')];
 	   }
 
-	   return false;
+	   return null;
 	}
 
 	/**
-	 * @param string|integer $year
+	 * @param integer $year
 	 * @return array<string,string>
 	 */
-	private static function getEaster($year)
+	private static function getEaster(int $year): array
 	{
 		$easter = self::calculateEaster($year);
 		$goodFriday = $easter->sub(new DateInterval('P2D'));
@@ -84,13 +84,13 @@ final class CzechHolidays
 	/**
 	 * @link https://github.com/azuyalabs/yasumi/blob/1.6.1/src/Yasumi/Provider/ChristianHolidays.php#L561-L637
 	 *
-	 * @param string|int $year
+	 * @param int $year
 	 * @return DateTimeImmutable
 	 */
-	private static function calculateEaster($year)
+	private static function calculateEaster(int $year): DateTimeImmutable
 	{
-		if (extension_loaded('calendar')) {
-			$easter_days = \easter_days(intval($year));
+		if (\extension_loaded('calendar')) {
+			$easter_days = \easter_days($year);
 		} else {
 			$golden = (int) (($year % 19) + 1); // The Golden Number
 			// The Julian calendar applies to the original method from 326AD. The Gregorian calendar was first
@@ -128,7 +128,7 @@ final class CzechHolidays
 			}
 			$easter_days = (int) ($pfm + $tmp + 1); // Easter as the number of days after 21st March
 		}
-		$march21st = DateTimeImmutable::createFromFormat('Y-m-d', sprintf('%4d-03-21', $year));
-		return $march21st->add(new DateInterval('P' . $easter_days . 'D'));
+		$march21st = DateTimeImmutable::createFromFormat('Y-m-d', \sprintf('%4d-03-21', $year));
+		return $march21st->add(new DateInterval(\sprintf('P%dD', $easter_days)));
 	}
 }

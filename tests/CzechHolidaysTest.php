@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 namespace JK\Utils\Tests;
 
 use JK\Utils\CzechHolidays;
@@ -15,7 +16,7 @@ final class CzechHolidaysTest extends TestCase
 	{
 		$workDate = DateTime::createFromFormat('Y-m-d', '2018-01-31');
 		$this->assertFalse(CzechHolidays::isHoliday($workDate));
-		$this->assertFalse(CzechHolidays::getHolidayName($workDate));
+		$this->assertNull(CzechHolidays::getHolidayName($workDate));
 	}
 
 	/**
