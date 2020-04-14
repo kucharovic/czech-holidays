@@ -71,8 +71,10 @@ final class CzechHolidays
 	private static function getEaster(int $year): array
 	{
 		$easter = self::calculateEaster($year);
-		$goodFriday = $easter->sub(new DateInterval('P2D'));
-		$easterMonday = $easter->add(new DateInterval('P1D'));
+        	$goodFriday = clone $easter;
+        	$goodFriday->sub(new DateInterval('P2D'));
+        	$easterMonday = clone $easter;
+        	$easterMonday->add(new DateInterval('P1D'));
 
 		return [
 			$goodFriday->format('m-d')   => self::$goodFriday,
